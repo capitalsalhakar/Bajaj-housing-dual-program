@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bajaj Housing Finance - Dual Rate Home Loan</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Light background for the page */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            padding: 0.5rem; /* Reduced overall padding */
+            box-sizing: border-box;
+        }
+        .poster-container {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); /* Gradient background */
+            box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 5px 5px -3px rgba(0, 0, 0, 0.04); /* Smaller shadow */
+            max-width: 550px; /* Further reduced max width */
+            width: 100%;
+            border-radius: 1.25rem; /* Slightly less rounded corners */
+            overflow: hidden;
+            padding: 1.2rem 0.8rem; /* Further reduced padding for content */
+            color: white;
+            text-align: center;
+            position: relative;
+            animation: fadeIn 1s ease-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-money {
+            width: 60px; /* Further smaller icon */
+            height: 60px;
+            margin: 0 auto 0.8rem; /* Reduced margin */
+            display: block;
+        }
+
+        /* Responsive typography adjustments */
+        .text-4xl { font-size: 1.8rem; } /* Default for mobile, smaller */
+        @media (min-width: 640px) { .sm\:text-5xl { font-size: 2.2rem; } } /* sm: */
+        @media (min-width: 768px) { .md\:text-6xl { font-size: 2.5rem; } } /* md: */
+
+        .text-2xl { font-size: 1.1rem; } /* Smaller */
+        @media (min-width: 640px) { .sm\:text-3xl { font-size: 1.3rem; } }
+
+        .text-lg { font-size: 0.9rem; } /* Smaller */
+        @media (min-width: 640px) { .sm\:text-xl { font-size: 1rem; } }
+
+        .btn {
+            display: inline-block;
+            padding: 0.5rem 1.5rem; /* Further reduced padding */
+            background-color: #f97316; /* Orange button */
+            color: white;
+            border-radius: 9999px; /* Pill shape */
+            font-weight: 600;
+            text-decoration: none;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+            box-shadow: 0 5px 10px -2px rgba(0, 0, 0, 0.1), 0 2px 3px -1px rgba(0, 0, 0, 0.05); /* Smaller shadow */
+            margin-top: 1.2rem; /* Reduced margin for spacing */
+            cursor: pointer;
+        }
+        .btn:hover {
+            background-color: #ea580c; /* Darker orange on hover */
+            transform: translateY(-2px);
+        }
+
+        .feature-box {
+            background-color: rgba(255, 255, 255, 0.15); /* Slightly transparent white */
+            border-radius: 0.7rem; /* Slightly less rounded */
+            padding: 1rem; /* Reduced padding */
+            margin-bottom: 0.7rem; /* Space between boxes when stacked */
+            backdrop-filter: blur(5px); /* Frosted glass effect */
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            flex: 1; /* Allow boxes to grow in flex container */
+            text-align: left; /* Align text left within the box */
+        }
+
+        /* Flex container for feature boxes on medium and larger screens */
+        @media (min-width: 768px) {
+            .feature-boxes-container {
+                display: flex;
+                gap: 0.8rem; /* Reduced space between boxes */
+            }
+            .feature-box {
+                margin-bottom: 0; /* Remove bottom margin when side-by-side */
+            }
+        }
+
+        /* Modal specific styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        .modal-overlay.show {
+            opacity: 1;
+            visibility: visible;
+        }
+        .modal-content {
+            background: linear-gradient(135deg, #764ba2 0%, #667eea 100%); /* Reverse gradient for modal */
+            color: white;
+            padding: 1.5rem;
+            border-radius: 1rem;
+            max-width: 400px;
+            width: 90%;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+            position: relative;
+            transform: translateY(20px);
+            opacity: 0;
+            transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .modal-overlay.show .modal-content {
+            transform: translateY(0);
+            opacity: 1;
+        }
+        .modal-close-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+            line-height: 1;
+        }
+        .benefits-list-modal {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            text-align: left;
+        }
+        .benefit-item-modal {
+            background-color: rgba(255, 255, 255, 0.15);
+            border-radius: 0.5rem;
+            padding: 0.7rem;
+            margin-bottom: 0.5rem;
+            display: flex;
+            align-items: flex-start; /* Align icon and text at the top */
+            font-size: 0.95rem; /* Slightly smaller font for modal benefits */
+        }
+        .benefit-item-modal span {
+            margin-right: 0.6rem;
+            font-size: 1.2em; /* Larger emoji/icon */
+            line-height: 1; /* Ensure emoji aligns well */
+            flex-shrink: 0; /* Prevent emoji from shrinking */
+        }
+        .benefit-item-modal strong {
+            font-weight: 600; /* Medium bold for benefits */
+        }
+    </style>
+</head>
+<body>
+    <div class="poster-container">
+        <!-- Money Bag SVG Icon -->
+        <svg class="icon-money" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" clip-rule="evenodd" d="M12 2C7.02944 2 3 6.02944 3 11C3 15.9706 7.02944 20 12 20C16.9706 20 21 15.9706 21 11C21 6.02944 16.9706 2 12 2ZM12 4C8.13401 4 5 7.13401 5 11C5 14.866 8.13401 18 12 18C15.866 18 19 14.866 19 11C19 7.13401 15.866 4 12 4ZM12 6C10.3431 6 9 7.34315 9 9V12H15V9C15 7.34315 13.6569 6 12 6ZM11 14H13V16H11V14Z" fill="white"/>
+            <path d="M12 11C12.5523 11 13 10.5523 13 10V9C13 8.44772 12.5523 8 12 8C11.4477 8 11 8.44772 11 9V10C11 10.5523 11.4477 11 12 11Z" fill="white"/>
+        </svg>
+
+        <h1 class="text-3xl sm:text-4xl md:text-5xl font-extrabold leading-tight mb-2">
+            <span class="block">Reduce Your Risk.</span>
+            <span class="block">Secure Your Future.</span>
+        </h1>
+        <h2 class="text-xl sm:text-xl font-semibold mb-4">
+            With Bajaj Housing Finance's Dual Home Loan Rate Program
+        </h2>
+
+        <div class="mb-5 px-2 sm:px-4">
+            <p class="text-base sm:text-lg leading-relaxed mb-4">
+                Enjoy the best of both worlds:
+            </p>
+            <div class="feature-boxes-container">
+                <div class="feature-box">
+                    <h3 class="text-lg sm:text-xl font-bold mb-1">Fixed Interest Rate</h3>
+                    <p class="text-sm sm:text-base">
+                        <span class="mr-2 text-yellow-300">✅</span>
+                        Predictable EMIs and stability for initial years.
+                    </p>
+                </div>
+                <div class="feature-box">
+                    <h3 class="text-lg sm:text-xl font-bold mb-1">Floating Interest Rate</h3>
+                    <p class="text-sm sm:text-base">
+                        <span class="mr-2 text-yellow-300">✅</span>
+                        Benefit from falling market rates after fixed period.
+                    </p>
+                </div>
+            </div>
+
+            <p class="text-base sm:text-lg leading-relaxed mt-4">
+                Protect yourself from interest rate volatility and plan your finances with confidence.
+            </p>
+        </div>
+
+        <div class="flex justify-center gap-4 mt-4">
+            <!-- Benefits Button -->
+            <button id="benefitsBtn" class="btn">Benefits</button>
+            <!-- WhatsApp Chat Button -->
+            <a href="https://wa.me/1234567890" class="btn" target="_blank" rel="noopener noreferrer">Chat with us</a>
+        </div>
+
+        <p class="text-xs mt-5 opacity-80">
+            *Terms and conditions apply. Loan disbursal is subject to documentation and verification.
+        </p>
+    </div>
+
+    <!-- Benefits Modal -->
+    <div id="benefitsModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="modal-close-btn" onclick="toggleBenefitsModal()">&times;</button>
+            <ul class="benefits-list-modal">
+                <li class="benefit-item-modal">
+                    <span>💰</span> <strong>Fixed Interest Rate for 3 Years:</strong> Enjoy predictable and stable EMIs for the initial period, shielding you from market fluctuations.
+                </li>
+                <li class="benefit-item-modal">
+                    <span>💻</span> <strong>Transition to Floating Rate:</strong> After 3 years, your loan automatically adapts to market conditions, allowing you to benefit from potential rate drops.
+                </li>
+                <li class="benefit-item-modal">
+                    <span>💳</span> <strong>Attractive Starting Rates:</strong> Home loan interest rates for salaried applicants often start from a competitive 7.55%* p.a.
+                </li>
+                <li class="benefit-item-modal">
+                    <span>📈</span> <strong>No Prepayment Charges:</strong> Make part-prepayments from your own funds without additional fees during the fixed-rate period.
+                </li>
+                <li class="benefit-item-modal">
+                    <span>📅</span> <strong>Flexible Loan Tenure:</strong> Choose a repayment period that suits you, extending up to 32 years.
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <script>
+        // Function to toggle the visibility of the benefits modal
+        function toggleBenefitsModal() {
+            const modal = document.getElementById('benefitsModal');
+            modal.classList.toggle('show');
+        }
+
+        // Add event listener to the Benefits button
+        document.getElementById('benefitsBtn').addEventListener('click', toggleBenefitsModal);
+    </script>
+</body>
+</html>
